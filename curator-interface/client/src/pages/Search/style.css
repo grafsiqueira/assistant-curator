@@ -1,0 +1,22 @@
+#accords {
+  padding-top: 48px;
+}
+
+.bx--accordion.bx--skeleton.bx--accordion--end {
+  padding-top: 48px;
+}
+
+.bx--accordion__content {
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+#searchBar {
+  background-color: #e0e0e0;
+}
+
+.bx--search.bx--search--xl.some-class {
+  position: fixed;
+  z-index: 2;
+}

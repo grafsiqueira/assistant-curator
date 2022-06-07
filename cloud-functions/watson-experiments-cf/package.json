@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ibm_db": "^2.8.1",
+    "ibm-cloud-sdk-core": "^2.17.12",
+    "ibmid-login": "^1.17.0",
+    "watson-assistant-experiment": "^1.8.0"
+  }
+}

@@ -1,0 +1,21 @@
+#cognosModal .bx--modal-container {
+  max-height: 500px;
+  min-height: 500px;
+}
+
+#cognosModal .bx--modal-header {
+  z-index: 2;
+  padding-bottom: none;
+}
+
+#cognosModal .bx--tabs--scrollable__nav {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  margin-left: 10px;
+  margin-top: -10px;
+}
+
+#cognosModal #text-input-4 {
+  display: block;
+}

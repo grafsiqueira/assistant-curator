@@ -1,0 +1,54 @@
+{
+  "name": "nodejsexpressapp",
+  "version": "1.0.0",
+  "description": "Start building your next Node.js Express",
+  "private": true,
+  "engines": {
+    "node": "^14.0.0"
+  },
+  "scripts": {
+    "dev": "nodemon server/server.js",
+    "start": "node server/server.js",
+    "lint": "npx eslint . --fix",
+    "docker": "docker build -t backend-project .",
+    "fix": "eslint --ignore-path .gitignore . --fix",
+    "test": "jest --verbose --collect-coverage",
+    "tdd": "jest --verbose --watch --onlyChanged",
+    "precommit": "npm test"
+  },
+  "dependencies": {
+    "@ibm-cloud/cloudant": "^0.0.23",
+    "async": "^3.2.0",
+    "axios": "^0.21.1",
+    "connect-timeout": "^1.9.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "eyes": "^0.1.8",
+    "fs": "0.0.1-security",
+    "ibm_db": "^2.8.1",
+    "ibmid-login": "1.10.1",
+    "mongodb": "^3.6.9",
+    "nodejs": "^0.0.0",
+    "path": "^0.12.7",
+    "react-dom": "^17.0.2",
+    "socket.io": "^4.0.0",
+    "swagger-ui-express": "^4.1.5",
+    "typescript": "^4.6.3"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "eslint": "^7.29.0",
+    "eslint-config-ibm": "^1.15.0",
+    "eslint-config-strongloop": "^2.1.0",
+    "husky": "^7.0.4",
+    "jest": "^27.4.3",
+    "mocha": "^8.3.2",
+    "nodemon": "^2.0.7",
+    "nyc": "^15.1.0",
+    "sinon": "^10.0.1",
+    "sinon-chai": "^3.6.0",
+    "supertest": "^6.1.3"
+  }
+}

@@ -1,0 +1,7 @@
+**/node_modules
+**/config/**
+**/common/credentials
+**/package-lock.json
+**/output.json
+**/invocation.json
+*/.DS_Store

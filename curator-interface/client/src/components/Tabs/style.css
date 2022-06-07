@@ -1,0 +1,14 @@
+.bx--tabs--scrollable__nav {
+  height: 50px !important;
+  width: 100vw;
+}
+
+.bx--tabs--scrollable {
+  height: 50px !important;
+}
+
+.bx--tab-content {
+  height: 40rem;
+  padding: 2rem !important;
+  position: relative;
+}

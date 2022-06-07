@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100&display=swap");
+
+#login_page {
+  height: 100%
+}
+
+#login_content {
+  display: flex;
+  flex-direction: row;
+  background-color: #171617;
+  height: 100vh;
+}
+
+#login {
+  width: 30%;
+  padding: 5rem;
+}
+
+#login h2, #login .bx--label {
+  color: white
+}
+
+
+#buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.button {
+  width: 49%;
+}
+
+#login_image {
+  width: 80%;
+  height: 94.6vh;
+  padding: 2rem;
+}
+
+#image {
+  background-image: url("../../images/login.png");
+  background-size: 90%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+}
+::-webkit-scrollbar {
+  width: 0;
+} 

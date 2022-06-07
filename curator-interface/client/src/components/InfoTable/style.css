@@ -1,0 +1,20 @@
+.bx--data-table td {
+  align-items: center;
+}
+
+.bx--data-table-header__title {
+  height: 10px;
+}
+
+.bx--data-table--sticky-header {
+  max-height: 65vh;
+}
+.bx--data-table-content {
+  height: 100%;
+}
+.bx--data-table-container {
+  padding-bottom: 10px;
+}
+.bx--toolbar-content {
+  height: 10px;
+}

@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100&display=swap");
+
+#content {
+  align-content: center;
+  align-items: center;
+}
+
+.bx--tabs.bx--skeleton {
+  margin-top: 5vh;
+  margin-bottom: 2vh;
+}
+
+.bx--tabs__nav.bx--tabs__nav--hidden {
+  height: 6vh !important;
+}
+
+.bx--tabs__nav-link {
+  width: 20vw !important;
+  height: 20vh !important;
+}
+
+.bx--skeleton.bx--data-table-container {
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
+
+.bx--skeleton.bx--data-table-header {
+  padding: 1rem 0px 0.5rem 1rem;
+}
+
+.bx--skeleton.bx--btn.bx--btn--sm {
+  height: 20vh;
+}
+
+.bx--data-table-header__description {
+  display: none;
+}

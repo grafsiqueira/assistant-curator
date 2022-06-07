@@ -1,0 +1,34 @@
+header svg {
+  width: 1vw;
+}
+header li {
+  list-style-type: none;
+  width: max-content;
+}
+#Header{
+  margin-bottom: 3.3%;
+  width: 100vw;
+}
+.bx--header__action{
+  width: auto;
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+a.bx--header__menu-item:focus{
+  border-color: transparent;
+  outline: none;
+}
+
+.bx--header__menu {
+  width: max-content!important
+}
+
+.bx--header__menu li {
+  width: 100% !important;
+  text-overflow: ellipsis;
+}
+
+#accounts{
+  width: 17vw;
+}

@@ -1,0 +1,25 @@
+.bx--toast-notification {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  width: 25rem;
+  margin-right: 0;
+  animation: slideIn 2s, 6s fadeOut 2s;
+}
+
+@keyframes slideIn {
+  from {
+    margin-right: -30rem;
+  }
+  to {
+    margin-right: 0px;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
