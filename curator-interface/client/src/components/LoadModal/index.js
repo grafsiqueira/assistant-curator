@@ -7,11 +7,8 @@ import "./style.css";
 export default function LoadModal() {
   const {
     language,
-    cloudantApi,
-    cloudantUrl,
-    cloudantDbName,
-    defaultDashboardName,
-    setDefaultDashboardName,
+    credentialsAndDefaults,
+    setCredentialsAndDefaults,
     setWarningOpen,
     loadModalOpen,
     setUnsavedChanges,
@@ -48,10 +45,10 @@ export default function LoadModal() {
   async function handleSubmit() {
     setWarningOpen(false);
     const dashboardSpec = await getFromCloudant(
-      defaultDashboardName,
-      cloudantApi,
-      cloudantUrl,
-      cloudantDbName,
+      credentialsAndDefaults.defaults.defaultDashboardName,
+      credentialsAndDefaults.credentials.cloudantApi,
+      credentialsAndDefaults.credentials.cloudantUrl,
+      credentialsAndDefaults.defaults.cloudantDbName,
       setWarningOpen
     );
     if (dashboardSpec.Error) {
@@ -73,7 +70,6 @@ export default function LoadModal() {
       onRequestClose={() => {
         setWarningOpen(false);
         setLoadModalOpen(false);
-        setDefaultDashboardName(defaultDashboardName);
       }}
       onRequestSubmit={handleSubmit}
       preventCloseOnClickOutside
@@ -82,10 +78,12 @@ export default function LoadModal() {
         data-modal-primary-focus
         id="text-input-9"
         labelText={textLanguage[language].loadModal.inputLabel1}
-        placeholder={defaultDashboardName}
+        placeholder={credentialsAndDefaults.defaults.defaultDashboardName}
         style={{ marginBottom: "1rem" }}
         onChange={(e) => {
-          setDefaultDashboardName(e.target.value);
+          let temp = { ...credentialsAndDefaults };
+          temp.defaults.defaultDashboardName = e.target.value;
+          setCredentialsAndDefaults(temp);
         }}
       />
     </Modal>

@@ -16,14 +16,9 @@ import {
 import { sendScore } from "../../helpers/helpers";
 import textLanguage from "../../helpers/languagesConfig";
 
-export default function InfoTable({ ID, rowData }) {
-  const {
-    conversations,
-    setConversations,
-    connectionString,
-    logsTable,
-    language,
-  } = useGlobalState();
+export default function InfoTable({ ID, day, rowData }) {
+  const { conversations, setConversations, credentialsAndDefaults, language } =
+    useGlobalState();
 
   const headerData = [
     {
@@ -49,7 +44,12 @@ export default function InfoTable({ ID, rowData }) {
   ];
 
   const filtered = rowData.filter((value) => {
-    return value.CONVERSATIONID === ID || value.FIRSTINTENT === ID;
+    if (day)
+      return (
+        (value.CONVERSATIONID === ID && value.CLIENTTIMESTAMP.includes(day)) ||
+        (value.FIRSTINTENT === ID && value.CLIENTTIMESTAMP.includes(day))
+      );
+    else return value.CONVERSATIONID === ID || value.FIRSTINTENT === ID;
   });
 
   return (
@@ -79,8 +79,8 @@ export default function InfoTable({ ID, rowData }) {
                 onClick={() => {
                   sendScore(
                     conversations,
-                    connectionString,
-                    logsTable,
+                    credentialsAndDefaults.credentials.connectionString,
+                    credentialsAndDefaults.defaults.logsTable,
                     setConversations
                   );
                 }}

@@ -11,9 +11,15 @@ function getConversations({ connStr, table }) {
     try {
       const conn = await connect(connStr);
       const rows = await select(conn, table, "score is null");
-      const result = arrangeConversations(rows);
+      const conversations = arrangeConversations(rows);
+      const { conversationsByDay, intentsByDay } = sortByDay(conversations);
+      console.log(intentsByDay);
       endConnection(conn);
-      resolve(result);
+      resolve({
+        conversations: conversations,
+        conversationsByDay: conversationsByDay,
+        intentsByDay: intentsByDay,
+      });
     } catch {
       resolve(null);
     }
@@ -28,6 +34,32 @@ function arrangeConversations(rows) {
     else arrangedConversations[row.CONVERSATIONID] = [row];
   }
   return arrangedConversations;
+}
+
+function sortByDay(arrangedConversations) {
+  const conversationsByDay = {};
+  const intentsByDay = {};
+
+  Object.entries(arrangedConversations).map(([key, value]) => {
+    const day = extractDay(value);
+    if (conversationsByDay[day] && !conversationsByDay[day].includes(key))
+      conversationsByDay[day].push(key);
+    else conversationsByDay[day] = [key];
+
+    for (let obj of value) {
+      if (intentsByDay[day] && !intentsByDay[day].includes(obj.FIRSTINTENT)) {
+        intentsByDay[day] = intentsByDay[day].concat(obj.FIRSTINTENT);
+      } else if (!intentsByDay[day]) {
+        intentsByDay[day] = [obj.FIRSTINTENT];
+      }
+    }
+  });
+  return { conversationsByDay: conversationsByDay, intentsByDay: intentsByDay };
+}
+
+function extractDay(conversationRows) {
+  const firstTimeStamp = conversationRows[0].CLIENTTIMESTAMP.split(" ");
+  return firstTimeStamp[0];
 }
 
 async function updateConversation(conversations, connStr, table) {

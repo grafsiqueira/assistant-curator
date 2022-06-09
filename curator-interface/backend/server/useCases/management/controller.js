@@ -12,8 +12,15 @@ const {
 const { insertOnCloudant, getFromCloudant } = require("../../helpers/cloudant");
 
 async function getLogs(req, res) {
-  const conversations = await getConversations(req.body);
-  conversations ? res.send({ conversations }) : res.send(null);
+  const result = await getConversations(req.body);
+
+  result
+    ? res.send({
+        conversations: result.conversations,
+        conversationsByDay: result.conversationsByDay,
+        intentsByDay: result.intentsByDay,
+      })
+    : res.send(null);
 }
 async function updateScore(req, res) {
   const { conversation, connStr, table } = req.body;

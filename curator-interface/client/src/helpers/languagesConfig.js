@@ -94,6 +94,9 @@ export default {
       text: "Conexão realizada com sucesso.",
       caption: "",
     },
+    tabs: {
+      itensPerPage: "Itens por página",
+    },
   },
   es: {
     headerSwitcher: {
@@ -190,6 +193,9 @@ export default {
       text: "Conexión exitosa.",
       caption: "",
     },
+    tabs: {
+      itensPerPage: "Artículos por página",
+    },
   },
   en: {
     headerSwitcher: {
@@ -285,6 +291,9 @@ export default {
       heading: "Success!",
       text: "Successfully connected.",
       caption: "",
+    },
+    tabs: {
+      itensPerPage: "Items per page",
     },
   },
 };

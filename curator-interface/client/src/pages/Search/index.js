@@ -9,7 +9,10 @@ import {
   AccordionSkeleton,
   Search,
 } from "carbon-components-react";
+
 import InfoTable from "../../components/InfoTable";
+import DateChooser from "../../components/DateChooser";
+
 import { getLogs, groupByIntent, createRows } from "../../helpers/helpers";
 
 import ConfigModal from "../../components/ConfigModal";
@@ -28,15 +31,18 @@ export default function SearchPage() {
     setSuccessOpen,
     setWarningOpen,
     conversations,
+    setConversations,
+    setConversationsByDay,
+    intentsByDay,
+    setIntentsByDay,
+    dateFilter,
+    setDateFilter,
     rowData,
     setRowData,
-    setConversations,
-    connectionString,
-    logsTable,
+    credentialsAndDefaults,
     setCognosSession,
   } = useGlobalState();
 
-  const [intentGroups, setIntentGroups] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
@@ -53,9 +59,12 @@ export default function SearchPage() {
 
     if (conversations.length === 0)
       await getLogs(
-        connectionString,
-        logsTable,
+        credentialsAndDefaults.credentials.connectionString,
+        credentialsAndDefaults.defaults.logsTable,
         setConversations,
+        setConversationsByDay,
+        setIntentsByDay,
+        setDateFilter,
         setSuccessOpen,
         setLoading,
         setConfigOpen,
@@ -64,7 +73,6 @@ export default function SearchPage() {
   }, []);
 
   useEffect(() => {
-    setIntentGroups(groupByIntent(conversations).sort());
     createRows(conversations, setRowData);
   }, [conversations]);
 
@@ -79,28 +87,42 @@ export default function SearchPage() {
   });
 
   return (
-    <div id="content">
-      <Header modalOpen={setConfigOpen} helpOpen={setHelpOpen} />
+    <div id="search-page">
+      <div id="top">
+        <Header
+          id="header-search"
+          modalOpen={setConfigOpen}
+          helpOpen={setHelpOpen}
+        />
+        <div id="dateChooser">
+          <DateChooser />
+        </div>
+        <Search
+          {...props()}
+          id="searchBar"
+          onChange={(e) => {
+            if (!e.target.value) {
+              setSearchValue("");
+            } else {
+              setSearchValue(e.target.value);
+            }
+          }}
+        />
+      </div>
       <ConfigModal />
-      <Search
-        {...props()}
-        id="searchBar"
-        onChange={(e) => {
-          setSearchValue(e.target.value);
-        }}
-      />
+
       {loading ? (
         <AccordionSkeleton />
       ) : (
         <div id="accords">
           <Accordion>
-            {intentGroups.map((intent) =>
+            {intentsByDay[dateFilter].map((intent) =>
               intent
                 .toLowerCase()
                 .replace(/\s/g, "")
                 .includes(searchValue.toLowerCase().replace(/\s/g, "")) ? (
                 <AccordionItem title={intent === "" ? "-" : intent}>
-                  <InfoTable ID={intent} rowData={rowData} />
+                  <InfoTable ID={intent} day={dateFilter} rowData={rowData} />
                 </AccordionItem>
               ) : (
                 ""

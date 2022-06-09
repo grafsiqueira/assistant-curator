@@ -1,22 +1,42 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100&display=swap");
 
 #content {
-  align-content: center;
-  align-items: center;
+  height: 100%;
+  margin: 0; 
+  overflow: hidden;
 }
 
-.bx--tabs.bx--skeleton {
-  margin-top: 5vh;
+#footer{  
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+}
+
+#pagination{
+  width: 100%;
+}
+
+#dateChooser{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: #f2f2f2;
+}
+
+.bx--tabs .bx--skeleton {
   margin-bottom: 2vh;
 }
 
-.bx--tabs__nav.bx--tabs__nav--hidden {
+.bx--tabs__nav .bx--tabs__nav--hidden {
   height: 6vh !important;
 }
 
 .bx--tabs__nav-link {
-  width: 20vw !important;
-  height: 20vh !important;
+  width: 15vw !important;
+  height: 5vh !important;
 }
 
 .bx--skeleton.bx--data-table-container {

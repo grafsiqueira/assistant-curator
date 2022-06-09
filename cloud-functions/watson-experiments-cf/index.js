@@ -9,9 +9,13 @@ function main(params) {
   const { assistantCreds, db2Creds } = params;
   return new Promise(async (resolve, reject) => {
     try {
-      await createTables(db2Creds.connStr);
+      await createTables(db2Creds.connStr, db2Creds.tables);
       const experimentResults = await runExperiment(assistantCreds);
-      await insertOnDb2(db2Creds.connStr, returnSqlStrings(experimentResults));
+      await insertOnDb2(
+        db2Creds.connStr,
+        db2Creds.tables,
+        returnSqlStrings(experimentResults, db2Creds.tables)
+      );
       resolve({ body: experimentResults });
     } catch (error) {
       console.log(error);

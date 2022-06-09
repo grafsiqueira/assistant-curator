@@ -12,6 +12,8 @@ import {
 import "./style.css";
 
 import CognosConfigModal from "../../components/CognosConfigModal";
+import SaveModal from "../../components/SaveModal";
+import LoadModal from "../../components/LoadModal";
 
 export default function CognosPage() {
   const {
@@ -24,34 +26,12 @@ export default function CognosPage() {
     setCognosClient,
     cognosSession,
     setCognosSession,
-    cognosUsername,
-    cognosPassword,
+    credentialsAndDefaults,
     cognosDashboard,
     setCognosDashboard,
     setSuccessOpen,
     setUnsavedChanges,
     setStandardDashboardModal,
-    cloudantApi,
-    cloudantUrl,
-    cloudantDbName,
-    defaultDashboardName,
-    xsd,
-    jdbcUrl,
-    driverClassName,
-    schema,
-    db2Username,
-    db2Password,
-    logsTable,
-    conversationTable,
-    callsTable,
-    contextTable,
-    conversationPathTable,
-    overviewTable,
-    classDistributionTable,
-    precisionAtKTable,
-    classAccuracyTable,
-    pairWiseClassErrorsTable,
-    accuracyVsCoverageTable,
   } = useGlobalState();
 
   const [renderSave, setRenderSave] = useState(false);
@@ -89,23 +69,23 @@ export default function CognosPage() {
       cognosApi.dashboard
         .openDashboard({
           dashboardSpec: await initializeSources(
-            xsd,
-            jdbcUrl,
-            driverClassName,
-            schema,
-            db2Username,
-            db2Password,
-            logsTable,
-            conversationTable,
-            callsTable,
-            contextTable,
-            conversationPathTable,
-            overviewTable,
-            classDistributionTable,
-            precisionAtKTable,
-            classAccuracyTable,
-            pairWiseClassErrorsTable,
-            accuracyVsCoverageTable
+            credentialsAndDefaults.defaults.xsd,
+            credentialsAndDefaults.credentials.jdbcUrl,
+            credentialsAndDefaults.defaults.driverClassName,
+            credentialsAndDefaults.defaults.schema,
+            credentialsAndDefaults.credentials.db2Username,
+            credentialsAndDefaults.credentials.db2Password,
+            credentialsAndDefaults.defaults.logsTable,
+            credentialsAndDefaults.defaults.conversationTable,
+            credentialsAndDefaults.defaults.callsTable,
+            credentialsAndDefaults.defaults.contextTable,
+            credentialsAndDefaults.defaults.conversationPathTable,
+            credentialsAndDefaults.defaults.overviewTable,
+            credentialsAndDefaults.defaults.classDistributionTable,
+            credentialsAndDefaults.defaults.precisionAtKTable,
+            credentialsAndDefaults.defaults.classAccuracyTable,
+            credentialsAndDefaults.defaults.pairWiseClassErrorsTable,
+            credentialsAndDefaults.defaults.accuracyVsCoverageTable
           ),
         })
         .then(async (dashboardAPI) => {
@@ -131,12 +111,15 @@ export default function CognosPage() {
     setStandardDashboardModal(false);
 
     if (
-      cognosUsername &&
-      cognosUsername !== "null" &&
-      cognosPassword &&
-      cognosPassword !== "null"
+      credentialsAndDefaults.credentials.cognosUsername &&
+      credentialsAndDefaults.credentials.cognosUsername !== "null" &&
+      credentialsAndDefaults.credentials.cognosPassword &&
+      credentialsAndDefaults.credentials.cognosPassword !== "null"
     ) {
-      const session = await getCognosSession(cognosUsername, cognosPassword);
+      const session = await getCognosSession(
+        credentialsAndDefaults.credentials.cognosUsername,
+        credentialsAndDefaults.credentials.cognosPassword
+      );
       if (session.data.Error) {
         setCognosSession(null);
       } else {
@@ -162,10 +145,10 @@ export default function CognosPage() {
         await loadDashboard(cognosApi, cognosDashboard, setUnsavedChanges);
       } else {
         const storagedDashboard = await getFromCloudant(
-          defaultDashboardName,
-          cloudantApi,
-          cloudantUrl,
-          cloudantDbName,
+          credentialsAndDefaults.defaults.defaultDashboardName,
+          credentialsAndDefaults.credentials.cloudantApi,
+          credentialsAndDefaults.credentials.cloudantUrl,
+          credentialsAndDefaults.defaults.cloudantDbName,
           setStandardDashboardModal
         );
         setCognosConfigOpen(false);
@@ -188,6 +171,8 @@ export default function CognosPage() {
         helpOpen={setCognosHelpOpen}
         renderButton={renderSave}
       />
+      <SaveModal />
+      <LoadModal />
       <CognosConfigModal />
       <div id="cognosDiv"></div>
     </div>

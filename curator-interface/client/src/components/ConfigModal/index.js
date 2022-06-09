@@ -22,10 +22,12 @@ export default function ConfigModal() {
     setConfigOpen,
     setWarningOpen,
     setSuccessOpen,
-    setConnectionString,
-    logsTable,
-    setLogsTable,
+    credentialsAndDefaults,
+    setCredentialsAndDefaults,
     setConversations,
+    setConversationsByDay,
+    setIntentsByDay,
+    setDateFilter,
     resources,
     accountLoading,
   } = useGlobalState();
@@ -39,8 +41,10 @@ export default function ConfigModal() {
   }, [resources]);
 
   useEffect(async () => {
-    const resourceKeys = await getResourceKeys(selectedInstance.guid);
-    setSelectedCredential(resourceKeys.resources[0]);
+    if (selectedInstance) {
+      const resourceKeys = await getResourceKeys(selectedInstance.guid);
+      setSelectedCredential(resourceKeys.resources[0]);
+    }
   }, [selectedInstance]);
 
   async function handleSubmit() {
@@ -49,12 +53,17 @@ export default function ConfigModal() {
     setConfigOpen(false);
     setLoading(true);
 
-    const connStr = await generateConnectionString(selectedCredential);
-    setConnectionString(connStr);
+    const connStr = generateConnectionString(selectedCredential);
+    let temp = { ...credentialsAndDefaults };
+    temp.credentials.connectionString = connStr;
+    setCredentialsAndDefaults(temp);
     await getLogs(
       connStr,
-      logsTable,
+      credentialsAndDefaults.defaults.logsTable,
       setConversations,
+      setConversationsByDay,
+      setIntentsByDay,
+      setDateFilter,
       setSuccessOpen,
       setLoading,
       noConnection,
@@ -104,10 +113,12 @@ export default function ConfigModal() {
         data-modal-primary-focus
         id="text-input-2"
         labelText={textLanguage[language].modal.inputLabel2}
-        placeholder={logsTable}
+        placeholder={credentialsAndDefaults.defaults.logsTable}
         style={{ marginBottom: "1rem" }}
         onChange={(e) => {
-          setLogsTable(e.target.value.toUpperCase());
+          let temp = { ...credentialsAndDefaults };
+          temp.defaults.logsTable = e.target.value.toUpperCase();
+          setCredentialsAndDefaults(temp);
         }}
       />
     </Modal>

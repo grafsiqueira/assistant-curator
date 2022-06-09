@@ -14,6 +14,7 @@ export function createRows(conversations, setRowData) {
       rowAux.CLIENTMESSAGE = log.CLIENTMESSAGE;
       rowAux.ASSISTANTMESSAGE = log.ASSISTANTMESSAGE;
       rowAux.FIRSTINTENT = log.FIRSTINTENT;
+      rowAux.CLIENTTIMESTAMP = log.CLIENTTIMESTAMP;
       rowAux.SCORE = (
         <BasicRating
           conversationID={log.CONVERSATIONID}
@@ -32,6 +33,9 @@ export async function getLogs(
   connectionString,
   tableName,
   setConversations,
+  setConversationsByDay,
+  setIntentsByDay,
+  setDateFilter,
   setSuccessOpen,
   setLoading,
   callback,
@@ -41,29 +45,19 @@ export async function getLogs(
     connStr: connectionString,
     table: tableName,
   });
-  console.log(response);
   if (
     response.data.conversations &&
     Object.keys(response.data.conversations).length != 0
   ) {
     setSuccessOpen(true);
-    setLoading(false);
     setConversations(response.data.conversations);
+    setDateFilter(Object.keys(response.data.conversationsByDay)[0]);
+    setConversationsByDay(response.data.conversationsByDay);
+    setIntentsByDay(response.data.intentsByDay);
+    setLoading(false);
   } else {
     callback(param);
   }
-}
-
-export function groupByIntent(conversations) {
-  const auxArray = [];
-
-  Object.values(conversations).map((value) => {
-    value.map((obj) => {
-      if (!auxArray.includes(obj.FIRSTINTENT)) auxArray.push(obj.FIRSTINTENT);
-    });
-  });
-
-  return auxArray;
 }
 
 export async function sendScore(
@@ -200,3 +194,34 @@ export function registerLogin(docId, document) {
     }
   });
 }
+
+export const defaultValues = {
+  credentials: {
+    connectionString: null,
+    db2Username: null,
+    db2Password: null,
+    jdbcUrl: null,
+    cognosUsername: null,
+    cognosPassword: null,
+    cloudantApi: null,
+    cloudantUrl: null,
+  },
+  defaults: {
+    defaultDashboardName: null,
+    cloudantDbName: "dashboards",
+    xsd: "https://ibm.com/daas/module/1.0/module.xsd",
+    driverClassName: "com.ibm.db2.jcc.DB2Driver",
+    schema: "CURATOR",
+    logsTable: "LOGS",
+    conversationTable: "CONVERSATIONS",
+    callsTable: "CALLS",
+    contextTable: "CONTEXTVARIABLES",
+    conversationPathTable: "CONVERSATIONPATH",
+    overviewTable: "OVERVIEW",
+    classDistributionTable: "CLASSDISTRIBUTION",
+    precisionAtKTable: "PRECISIONATK",
+    classAccuracyTable: "CLASSACCURACY",
+    pairWiseClassErrorsTable: "PAIRWISECLASSERRORS",
+    accuracyVsCoverageTable: "ACCURACYVSCOVERAGE",
+  },
+};

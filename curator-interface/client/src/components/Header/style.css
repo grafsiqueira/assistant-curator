@@ -5,10 +5,11 @@ header li {
   list-style-type: none;
   width: max-content;
 }
-#Header{
-  margin-bottom: 3.3%;
-  width: 100vw;
+
+.bx--header{
+  position: relative;
 }
+
 .bx--header__action{
   width: auto;
   padding-left: .5rem;

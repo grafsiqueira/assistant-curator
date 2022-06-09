@@ -3,7 +3,6 @@ const { phoneTable } = require("./handlePhoneLogs");
 async function handleConversations(logs, assistantConfig) {
   const { transferNode, feedbackNode, relevantTopics, finalNode } =
     assistantConfig;
-  const groupsAndIntervals = [];
   const pathObjs = [];
   const groups = groupBy(logs);
 
@@ -12,7 +11,7 @@ async function handleConversations(logs, assistantConfig) {
   let relevance;
   let channel;
 
-  Object.entries(groups).map(([key, value]) => {
+  const groupsAndIntervals = Object.entries(groups).map(([key, value]) => {
     channel = null;
     transfered = null;
     relevance = null;
@@ -38,12 +37,9 @@ async function handleConversations(logs, assistantConfig) {
         pathObjs[pathObjs.length - 2].destineNode = findNodesVisited(log)[0];
     }
 
-    groupsAndIntervals.push({
+    return {
       idUser:
-        value[0].request &&
-        value[0].request.context &&
-        value[0].request.context.metadata &&
-        value[0].request.context.metadata.user_id
+        typeof value[0].request.context.metadata !== "undefined"
           ? value[0].request.context.metadata.user_id
           : "",
       conversationID: key,
@@ -53,7 +49,7 @@ async function handleConversations(logs, assistantConfig) {
       feedback: feedback ? feedback : 0,
       transfered: transfered,
       relevance: relevance,
-    });
+    };
   });
 
   const phoneObjects = phoneTable(groupsAndIntervals, groups, finalNode);
@@ -66,14 +62,11 @@ async function handleConversations(logs, assistantConfig) {
 }
 
 function groupBy(array) {
-  let result;
-  result = array.reduce((objectsByKeyValue, obj) => {
+  return array.reduce((objectsByKeyValue, obj) => {
     const value = obj.request.context.conversation_id;
     objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
     return objectsByKeyValue;
   }, {});
-
-  return result;
 }
 
 function findInterval(start, finish) {
@@ -85,24 +78,27 @@ function findInterval(start, finish) {
 }
 
 function findFeedBack(log, feedbackNode) {
+  let found = false;
   for (let searchedTitle of feedbackNode) {
-    return searchLogForTitle(log, searchedTitle);
-  }
-}
-
-function searchLogForTitle(log, searchedTitle) {
-  if (
-    log.response.output.nodes_visited_details &&
-    log.response.output.nodes_visited_details.some(
-      (node) => node.title == searchedTitle || node.dialog_node == searchedTitle
-    )
-  ) {
-    const contextArray = Object.entries(log.response.context);
-    for (let keyValuePair of contextArray) {
-      const feedback = handleFeedback(keyValuePair);
-      if (feedback) {
-        return feedback;
-      } else handleFeedback(keyValuePair);
+    if (
+      !found &&
+      log.response.output.nodes_visited_details &&
+      log.response.output.nodes_visited_details.some(
+        (node) =>
+          node.title == searchedTitle || node.dialog_node == searchedTitle
+      )
+    ) {
+      found = true;
+      break;
+    }
+    if (found) {
+      const contextArray = Object.entries(log.response.context);
+      for (let keyValuePair of contextArray) {
+        const feedback = handleFeedback(keyValuePair);
+        if (feedback) {
+          return feedback;
+        }
+      }
     }
   }
 }

@@ -7,6 +7,8 @@ import { createRows, getLogs } from "../../helpers/helpers";
 import { TabsSkeleton, DataTableSkeleton } from "carbon-components-react";
 
 import ConfigModal from "../../components/ConfigModal";
+import PaginationComponent from "../../components/PaginationComponent";
+import DateChooser from "../../components/DateChooser";
 
 import "./style.css";
 
@@ -24,8 +26,10 @@ export default function Dashboard() {
     setRowData,
     conversations,
     setConversations,
-    connectionString,
-    logsTable,
+    setConversationsByDay,
+    setIntentsByDay,
+    setDateFilter,
+    credentialsAndDefaults,
     setCognosSession,
     setAccountModalOpen,
   } = useGlobalState();
@@ -44,9 +48,12 @@ export default function Dashboard() {
 
     if (conversations.length === 0)
       await getLogs(
-        connectionString,
-        logsTable,
+        credentialsAndDefaults.credentials.connectionString,
+        credentialsAndDefaults.defaults.logsTable,
         setConversations,
+        setConversationsByDay,
+        setIntentsByDay,
+        setDateFilter,
         setSuccessOpen,
         setLoading,
         setAccountModalOpen,
@@ -68,7 +75,17 @@ export default function Dashboard() {
           <DataTableSkeleton />
         </>
       ) : (
-        <BasicTabs />
+        <>
+          <div id="dateChooser">
+            <DateChooser />
+          </div>
+          <BasicTabs />
+          <div id="footer">
+            <div id="pagination">
+              <PaginationComponent />
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

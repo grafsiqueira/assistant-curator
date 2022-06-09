@@ -10,7 +10,7 @@ import {
 } from "../../helpers/apiCalls";
 import api from "../../services/api";
 
-import { registerLogin } from "../../helpers/helpers";
+import { registerLogin, defaultValues } from "../../helpers/helpers";
 
 import "./style.css";
 
@@ -22,34 +22,8 @@ export default function Login() {
     setAccount,
     setAccounts,
     setResources,
-    logsTable,
-    setLogsTable,
-    conversationTable,
-    setConversationTable,
-    callsTable,
-    setCallsTable,
-    contextTable,
-    setContextTable,
-    conversationPathTable,
-    setConversationPathTable,
-    overviewTable,
-    setOverviewTable,
-    classDistributionTable,
-    setClassDistributionTable,
-    precisionAtKTable,
-    setPrecisionAtKTable,
-    classAccuracyTable,
-    setClassAccuracyTable,
-    pairWiseClassErrorsTable,
-    setPairWiseClassErrorsTable,
-    accuracyVsCoverageTable,
-    setAccuracyVsCoverageTable,
-    xsd,
-    setXsd,
-    driverClassName,
-    setDriverClassName,
-    cloudantDbName,
-    setCloudantDbName,
+    credentialsAndDefaults,
+    setCredentialsAndDefaults,
   } = useGlobalState();
   const [token, setToken] = useState("");
   const [invalid, setInvalid] = useState(false);
@@ -69,7 +43,7 @@ export default function Login() {
         )
       ) {
         console.log("Found account. Picking last one used");
-        switchAccount(
+        await switchAccount(
           JSON.parse(localStorage.getItem("savedAccount")).metadata.guid
         ).then(() => {
           setAccount(JSON.parse(localStorage.getItem("savedAccount")));
@@ -79,7 +53,7 @@ export default function Login() {
         setAccount(res.resources[0]);
       }
       setResources(await getResources());
-      history.push("/");
+      history.push("/dashboard");
 
       registerLogin(
         `${
@@ -98,84 +72,18 @@ export default function Login() {
     setLoading(false);
   }
 
-  useEffect(async () => {
-    if (localStorage.getItem("xsd")) {
-      setXsd(localStorage.getItem("xsd"));
+  useEffect(() => {
+    let temp = { ...credentialsAndDefaults };
+    if (credentialsAndDefaults === null) {
+      temp = defaultValues;
     } else {
-      localStorage.setItem("xsd", xsd);
+      Object.entries(credentialsAndDefaults.defaults).map(([key, value]) => {
+        if (value === null) {
+          temp.defaults[key] = defaultValues.defaults[key];
+        }
+      });
     }
-    if (localStorage.getItem("driverClassName")) {
-      setDriverClassName(localStorage.getItem("driverClassName"));
-    } else {
-      localStorage.setItem("driverClassName", driverClassName);
-    }
-    if (localStorage.getItem("cloudantDbName")) {
-      setCloudantDbName(localStorage.getItem("cloudantDbName"));
-    } else {
-      localStorage.setItem("cloudantDbName", cloudantDbName);
-    }
-    if (localStorage.getItem("logsTable")) {
-      setLogsTable(localStorage.getItem("logsTable"));
-    } else {
-      localStorage.setItem("logsTable", logsTable);
-    }
-    if (localStorage.getItem("conversationTable")) {
-      setConversationTable(localStorage.getItem("conversationTable"));
-    } else {
-      localStorage.setItem("conversationTable", conversationTable);
-    }
-    if (localStorage.getItem("callsTable")) {
-      setCallsTable(localStorage.getItem("callsTable"));
-    } else {
-      localStorage.setItem("callsTable", callsTable);
-    }
-    if (localStorage.getItem("contextTable")) {
-      setContextTable(localStorage.getItem("contextTable"));
-    } else {
-      localStorage.setItem("contextTable", contextTable);
-    }
-    if (localStorage.getItem("conversationPathTable")) {
-      setConversationPathTable(localStorage.getItem("conversationPathTable"));
-    } else {
-      localStorage.setItem("conversationPathTable", conversationPathTable);
-    }
-    if (localStorage.getItem("overviewTable")) {
-      setOverviewTable(localStorage.getItem("overviewTable"));
-    } else {
-      localStorage.setItem("overviewTable", overviewTable);
-    }
-    if (localStorage.getItem("classDistributionTable")) {
-      setClassDistributionTable(localStorage.getItem("classDistributionTable"));
-    } else {
-      localStorage.setItem("classDistributionTable", classDistributionTable);
-    }
-    if (localStorage.getItem("precisionAtKTable")) {
-      setPrecisionAtKTable(localStorage.getItem("precisionAtKTable"));
-    } else {
-      localStorage.setItem("precisionAtKTable", precisionAtKTable);
-    }
-    if (localStorage.getItem("classAccuracyTable")) {
-      setClassAccuracyTable(localStorage.getItem("classAccuracyTable"));
-    } else {
-      localStorage.setItem("classAccuracyTable", classAccuracyTable);
-    }
-    if (localStorage.getItem("pairWiseClassErrorsTable")) {
-      setPairWiseClassErrorsTable(
-        localStorage.getItem("pairWiseClassErrorsTable")
-      );
-    } else {
-      localStorage.setItem(
-        "pairWiseClassErrorsTable",
-        pairWiseClassErrorsTable
-      );
-    }
-    if (localStorage.getItem("accuracyVsCoverageTable")) {
-      setAccuracyVsCoverageTable(
-        localStorage.getItem("accuracyVsCoverageTable")
-      );
-    } else {
-      localStorage.setItem("accuracyVsCoverageTable", accuracyVsCoverageTable);
-    }
+    setCredentialsAndDefaults(temp);
   }, []);
 
   return (

@@ -34,7 +34,7 @@ function queryAssistant(assistantConfig, cursor, lastRecord, fullResponse) {
           )
         );
       } else {
-        return resolve(fullResponse.slice(0, 700));
+        return resolve(fullResponse);
       }
     } catch (error) {
       reject(error);

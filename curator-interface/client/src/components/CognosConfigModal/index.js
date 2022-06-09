@@ -1,15 +1,8 @@
 import { useGlobalState } from "../../hooks/globalState";
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  TextInput,
-  Tabs,
-  Tab,
-  Select,
-  SelectItem,
-  Loading,
-} from "carbon-components-react";
-
+import { Modal, Tabs, Tab, Loading } from "carbon-components-react";
+import TextInput from "../TextInput";
+import Select from "../Select";
 import { getCognosSession } from "../../helpers/helpers";
 import { getResourceKeys } from "../../helpers/apiCalls";
 
@@ -19,52 +12,16 @@ import "./style.css";
 export default function CognosConfigModal() {
   const {
     history,
-    resources,
     language,
     cognosConfigOpen,
     setCognosConfigOpen,
-    cognosUsername,
-    setCognosUsername,
-    cognosPassword,
-    setCognosPassword,
-    setCloudantApi,
-    setCloudantUrl,
-    cloudantDbName,
-    setCloudantDbName,
+    credentialsAndDefaults,
+    setCredentialsAndDefaults,
     setCognosSession,
-    setCognosDashboard,
     setWarningOpen,
     setUnsavedChanges,
-    xsd,
-    setXsd,
-    setJdbcUrl,
-    driverClassName,
-    setDriverClassName,
-    setDb2UserName,
-    setDb2Passwor,
-    logsTable,
-    setLogsTable,
-    conversationTable,
-    setConversationTable,
-    callsTable,
-    setCallsTable,
-    contextTable,
-    setContextTable,
-    conversationPathTable,
-    setConversationPathTable,
-    overviewTable,
-    setOverviewTable,
-    classDistributionTable,
-    setClassDistributionTable,
-    precisionAtKTable,
-    setPrecisionAtKTable,
-    classAccuracyTable,
-    setClassAccuracyTable,
-    pairWiseClassErrorsTable,
-    setPairWiseClassErrorsTable,
-    accuracyVsCoverageTable,
-    setAccuracyVsCoverageTable,
     accountLoading,
+    setCognosDashboard,
   } = useGlobalState();
 
   const [cognosInstance, setCognosInstance] = useState(null);
@@ -88,8 +45,10 @@ export default function CognosConfigModal() {
       history.push("/login")
     );
     const credentials = resourceKeys.resources[0].credentials;
-    setCognosUsername(credentials.client_id);
-    setCognosPassword(credentials.client_secret);
+    let temp = { ...credentialsAndDefaults };
+    temp.credentials.cognosUsername = credentials.client_id;
+    temp.credentials.cognosPassword = credentials.client_secret;
+    setCredentialsAndDefaults(temp);
   }
 
   async function handleCloudantCredentials() {
@@ -97,8 +56,10 @@ export default function CognosConfigModal() {
       () => history.push("/login")
     );
     const credentials = resourceKeys.resources[0].credentials;
-    setCloudantApi(credentials.apikey);
-    setCloudantUrl(credentials.url);
+    let temp = { ...credentialsAndDefaults };
+    temp.credentials.cloudantApi = credentials.apikey;
+    temp.credentials.cloudantUrl = credentials.url;
+    setCredentialsAndDefaults(temp);
   }
 
   async function handleDb2Credentials() {
@@ -106,22 +67,26 @@ export default function CognosConfigModal() {
       history.push("/login")
     );
     const credentials = resourceKeys.resources[0].credentials;
-
-    setDb2UserName(credentials.connection.db2.authentication.username);
-    setDb2Passwor(credentials.connection.db2.authentication.password);
-    setJdbcUrl(
-      credentials.connection.db2.jdbc_url[0].replace(
-        "user=<userid>;password=<your_password>;",
-        ""
-      )
+    let temp = { ...credentialsAndDefaults };
+    temp.credentials.db2Username =
+      credentials.connection.db2.authentication.username;
+    temp.credentials.db2Password =
+      credentials.connection.db2.authentication.password;
+    temp.credentials.jdbcUrl = credentials.connection.db2.jdbc_url[0].replace(
+      "user=<userid>;password=<your_password>;",
+      ""
     );
+    setCredentialsAndDefaults(temp);
   }
 
   async function handleSubmit() {
     setCognosSession(null);
     setCognosDashboard(null);
     setUnsavedChanges(false);
-    const response = await getCognosSession(cognosUsername, cognosPassword);
+    const response = await getCognosSession(
+      credentialsAndDefaults.credentials.cognosUsername,
+      credentialsAndDefaults.credentials.cognosPassword
+    );
     if (response.data.Error) {
       setWarningOpen(true);
       setCognosSession(null);
@@ -147,217 +112,44 @@ export default function CognosConfigModal() {
     >
       <Tabs type="container">
         <Tab id={"cognos"} label={textLanguage[language].cognosModal.tab1}>
-          <Select
-            id="select-1"
-            invalidText="A valid value is required"
-            labelText={textLanguage[language].cognosModal.inputLabel1}
-            onChange={(e) => {
-              if (e.target.value === "placeholder")
-                alert(textLanguage[language].cognosModal.alert);
-              else setCognosInstance(JSON.parse(e.target.value));
-            }}
-          >
-            <SelectItem
-              text={textLanguage[language].cognosModal.selectAnOption}
-              value="placeholder"
-            />
-            {resources.cognos.body.resources.map((resource) => (
-              <SelectItem
-                text={resource.name}
-                value={JSON.stringify(resource)}
-              />
-            ))}
-          </Select>
+          <Select index={1} setSelection={setCognosInstance} field="cognos" />
         </Tab>
         <Tab id={"cloudant"} label={textLanguage[language].cognosModal.tab2}>
           <Select
-            id="select-1"
-            invalidText="A valid value is required"
-            labelText={textLanguage[language].cognosModal.inputLabel2}
-            onChange={(e) => {
-              if (e.target.value === "placeholder")
-                alert(textLanguage[language].cognosModal.alert);
-              else setCloudantInstance(JSON.parse(e.target.value));
-            }}
-          >
-            <SelectItem
-              text={textLanguage[language].cognosModal.selectAnOption}
-              value="placeholder"
-            />
-            {resources.cloudant.body.resources.map((resource) => (
-              <SelectItem
-                text={resource.name}
-                value={JSON.stringify(resource)}
-              />
-            ))}
-          </Select>
-
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-7"
-            labelText={textLanguage[language].cognosModal.inputLabel3}
-            placeholder={cloudantDbName}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setCloudantDbName(e.target.value);
-            }}
+            index={2}
+            setSelection={setCloudantInstance}
+            field="cloudant"
           />
+          <TextInput index={3} field="cloudantDbName" upperCase={false} />
         </Tab>
         <Tab id={"db2"} label={textLanguage[language].cognosModal.tab3}>
-          <Select
-            id="select-1"
-            invalidText="A valid value is required"
-            labelText={textLanguage[language].cognosModal.inputLabel4}
-            onChange={(e) => {
-              if (e.target.value === "placeholder")
-                alert(textLanguage[language].cognosModal.alert);
-              else setDb2Instance(JSON.parse(e.target.value));
-            }}
-          >
-            <SelectItem
-              text={textLanguage[language].cognosModal.selectAnOption}
-              value="placeholder"
-            />
-            {resources.db2.body.resources.map((resource) => (
-              <SelectItem
-                text={resource.name}
-                value={JSON.stringify(resource)}
-              />
-            ))}
-          </Select>
+          <Select index={2} setSelection={setDb2Instance} field="db2" />
 
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-8"
-            labelText={textLanguage[language].cognosModal.inputLabel5}
-            placeholder={xsd}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setXsd(e.target.value);
-            }}
-          />
-
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-10"
-            labelText={textLanguage[language].cognosModal.inputLabel6}
-            placeholder={driverClassName}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setDriverClassName(e.target.value);
-            }}
-          />
+          <TextInput index={5} field="xsd" upperCase={false} />
+          <TextInput index={6} field="driverClassName" upperCase={false} />
         </Tab>
         <Tab id="db2tables" label={textLanguage[language].cognosModal.tab4}>
+          <TextInput index={7} field="logsTable" upperCase={true} />
+          <TextInput index={8} field="conversationTable" upperCase={true} />
+          <TextInput index={9} field="callsTable" upperCase={true} />
+          <TextInput index={10} field="contextTable" upperCase={true} />
+          <TextInput index={12} field="overviewTable" upperCase={true} />
           <TextInput
-            data-modal-primary-focus
-            id="text-input-14"
-            labelText={textLanguage[language].cognosModal.inputLabel7}
-            placeholder={logsTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setLogsTable(e.target.value.toUpperCase());
-            }}
+            index={13}
+            field="classDistributionTable"
+            upperCase={true}
+          />
+          <TextInput index={14} field="precisionAtKTable" upperCase={true} />
+          <TextInput index={15} field="classAccuracyTable" upperCase={true} />
+          <TextInput
+            index={16}
+            field="pairWiseClassErrorsTable"
+            upperCase={true}
           />
           <TextInput
-            data-modal-primary-focus
-            id="text-input-15"
-            labelText={textLanguage[language].cognosModal.inputLabel8}
-            placeholder={conversationTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setConversationTable(e.target.value.toUpperCase());
-            }}
-          />
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-16"
-            labelText={textLanguage[language].cognosModal.inputLabel9}
-            placeholder={callsTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setCallsTable(e.target.value.toUpperCase());
-            }}
-          />
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-17"
-            labelText={textLanguage[language].cognosModal.inputLabel10}
-            placeholder={contextTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setContextTable(e.target.value.toUpperCase());
-            }}
-          />
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-17"
-            labelText={textLanguage[language].cognosModal.inputLabel11}
-            placeholder={conversationPathTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setConversationPathTable(e.target.value.toUpperCase());
-            }}
-          />
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-17"
-            labelText={textLanguage[language].cognosModal.inputLabel12}
-            placeholder={overviewTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setOverviewTable(e.target.value.toUpperCase());
-            }}
-          />
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-17"
-            labelText={textLanguage[language].cognosModal.inputLabel13}
-            placeholder={classDistributionTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setClassDistributionTable(e.target.value.toUpperCase());
-            }}
-          />
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-17"
-            labelText={textLanguage[language].cognosModal.inputLabel14}
-            placeholder={precisionAtKTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setPrecisionAtKTable(e.target.value.toUpperCase());
-            }}
-          />
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-17"
-            labelText={textLanguage[language].cognosModal.inputLabel15}
-            placeholder={classAccuracyTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setClassAccuracyTable(e.target.value.toUpperCase());
-            }}
-          />
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-17"
-            labelText={textLanguage[language].cognosModal.inputLabel16}
-            placeholder={pairWiseClassErrorsTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setPairWiseClassErrorsTable(e.target.value.toUpperCase());
-            }}
-          />
-          <TextInput
-            data-modal-primary-focus
-            id="text-input-17"
-            labelText={textLanguage[language].cognosModal.inputLabel17}
-            placeholder={accuracyVsCoverageTable}
-            style={{ marginBottom: "1rem" }}
-            onChange={(e) => {
-              setAccuracyVsCoverageTable(e.target.value.toUpperCase());
-            }}
+            index={17}
+            field="accuracyVsCoverageTable"
+            upperCase={true}
           />
         </Tab>
       </Tabs>

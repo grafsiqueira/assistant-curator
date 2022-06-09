@@ -11,7 +11,9 @@ export default function Routes() {
     <BrowserRouter>
       <GlobalStateProvider>
         <Switch>
-          <Route exact path="/" component={Dashboard} />
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/search" component={SearchPage} />

@@ -1,0 +1,5 @@
+.terraform
+*.tfstate*
+*.tfvars
+.DS_Store
+scripts/env-var.sh

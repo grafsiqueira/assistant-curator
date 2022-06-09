@@ -6,7 +6,6 @@ async function handleLogs(logs) {
   return Promise.all(primaryObject);
 }
 
-let i = 0;
 function handleLog(log) {
   return new Promise((resolve, reject) => {
     try {
@@ -15,10 +14,7 @@ function handleLog(log) {
       const nodeTitle = findNodesVisited(log)[0];
       const result = {
         idUser:
-          log.request &&
-          log.request.context &&
-          log.request.context.metadata &&
-          log.request.context.metadata.user_id
+          typeof log.request.context.metadata !== "undefined"
             ? log.request.context.metadata.user_id
             : "",
         conversationID: log.request.context.conversation_id,
@@ -38,7 +34,6 @@ function handleLog(log) {
         entities: findEntities(log),
         error: "",
       };
-      i++;
       resolve(result);
     } catch (error) {
       reject(error);

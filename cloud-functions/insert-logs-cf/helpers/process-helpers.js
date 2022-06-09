@@ -23,15 +23,16 @@ function insertOnDb2(dbConfig, results) {
       const quinarySqlString = agregateSql(results.path);
 
       const conn = await connect(connStr);
-
-      await insert(conn, primaryTableName, primarySqlString);
-      await insert(conn, secondaryTableName, secondarySqlString);
-      await insert(conn, tertiaryTableName, tertiarySqlString);
-      await insert(conn, quaternaryTableName, quaternarySqlString);
-      await insert(conn, quinaryTableName, quinarySqlString);
-
-      endConnection(conn);
-      resolve(console.log("Inserted on Db2"));
+      Promise.all([
+        insert(conn, primaryTableName, primarySqlString),
+        insert(conn, secondaryTableName, secondarySqlString),
+        insert(conn, tertiaryTableName, tertiarySqlString),
+        insert(conn, quaternaryTableName, quaternarySqlString),
+        insert(conn, quinaryTableName, quinarySqlString),
+      ]).then(() => {
+        endConnection(conn);
+        resolve(console.log("Inserted on Db2"));
+      });
     } catch (error) {
       reject(error);
     }
@@ -91,7 +92,11 @@ function insertOnCloudant(cloudantConfig, logs) {
     try {
       const { apiKey, url, dbName } = cloudantConfig;
       const client = createCloudantClient(url, apiKey);
-      await createDbAndDoc(client, dbName, { logs: logs });
+      for (let beginning = 0; beginning < logs.length; beginning += 200) {
+        await createDbAndDoc(client, dbName, {
+          logs: logs.slice(beginning, beginning + 200),
+        });
+      }
       resolve(console.log("Inserted on Cloudant!"));
     } catch (err) {
       console.log(err);

@@ -16,6 +16,6 @@ invocationCloud.json
 finale.json
 curator-interface/client/.eslintcache
 curator-interface/client/yarn.lock
-*/.DS_Store
+**/.DS_Store
 curator-interface/client/src/helpers/standardDashboard.json
 **/*.zip

@@ -19,14 +19,13 @@ function createTables(
   return new Promise(async (resolve, reject) => {
     try {
       const conn = await connect(connStr);
-
-      await createPrimaryTable(conn, primaryTableName);
-      await createSecondaryTable(conn, secondaryTableName);
-      await createTertiaryTable(conn, tertiaryTableName);
-      await createQuaternaryTable(conn, quaternaryTableName);
-      await createQuinaryTable(conn, quinaryTableName);
-
-      endConnection(conn);
+      await Promise.all([
+        createPrimaryTable(conn, primaryTableName),
+        createSecondaryTable(conn, secondaryTableName),
+        createTertiaryTable(conn, tertiaryTableName),
+        createQuaternaryTable(conn, quaternaryTableName),
+        createQuinaryTable(conn, quinaryTableName),
+      ]).then(endConnection(conn));
 
       resolve({ result: "success" });
     } catch (error) {

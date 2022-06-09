@@ -1,3 +1,7 @@
+.bx--tabs--scrollable__nav-item {
+  width: 20% !important;
+}
+
 .bx--tabs--scrollable__nav {
   height: 50px !important;
   width: 100vw;
