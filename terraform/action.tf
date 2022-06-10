@@ -103,6 +103,7 @@ resource "ibm_function_action" "watson-experiments" {
             "pairWiseClassErrorsTable":"PAIRWISECLASSERRORS",
             "accuracyVsCoverageTable":"ACCURACYVSCOVERAGE"
           }
+        }
       },
       {
         "key":"assistantCreds",
