@@ -4,7 +4,7 @@ Este asset foi projetado para atuar como plataforma de curadoria de Watson Assis
 
 ## Realizando o Deployment dos Recursos
 
-Essa documentação explica os detalhes do funcionamento do asset. Para visualizar a documentação de Deployment dos recursos [acesse esse guia](https://github.ibm.com/Innovation-Studio-Assets/assistant-curator/tree/master/terraform).
+Essa documentação explica os detalhes do funcionamento do asset. Para visualizar a documentação de Deployment dos recursos acesse o arquivo `terraform/README.md` que está junto com os códigos.
 
 ## **Arquitetura**
 

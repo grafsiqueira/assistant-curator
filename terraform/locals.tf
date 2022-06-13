@@ -4,6 +4,7 @@ locals {
   ce_project_name = "assistant-curation-${formatdate("DDMMYYYYhhmmss", timestamp())}"
   nlu_id          = length(var.nlu_name) > 0 ? data.ibm_resource_instance.nlu[0].id : ibm_resource_instance.nlu[0].id
   db2_id          = length(var.db2_name) > 0 ? data.ibm_resource_instance.db2[0].id : ibm_resource_instance.db2[0].id
+  cloudant_id     = length(var.cloudant_name) > 0 ? data.ibm_cloudant.cloudant[0].id : ibm_cloudant.cloudant[0].id
   cognos_id       = length(var.cognos_name) > 0 ? data.ibm_resource_instance.cognos[0].id : ibm_resource_instance.cognos[0].id
   assistant_id    = length(var.assistant_name) > 0 ? data.ibm_resource_instance.assistant[0].id : ibm_resource_instance.assistant[0].id
   cos_id          = length(var.cos_name) > 0 ? data.ibm_resource_instance.cos[0].id : ibm_resource_instance.cos[0].id

@@ -133,6 +133,11 @@ export default function CognosConfigModal() {
           <TextInput index={8} field="conversationTable" upperCase={true} />
           <TextInput index={9} field="callsTable" upperCase={true} />
           <TextInput index={10} field="contextTable" upperCase={true} />
+          <TextInput
+            index={11}
+            field="conversationPathTable"
+            upperCase={true}
+          />
           <TextInput index={12} field="overviewTable" upperCase={true} />
           <TextInput
             index={13}

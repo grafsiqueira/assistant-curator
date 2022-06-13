@@ -52,7 +52,7 @@ The table bellow show you where you can use an existing service or instance, as 
 
 ## How to Deploy your Resources
 
-To deploy this resources you will have to download the [code here](https://portal-de-demos-arquivos.s3.us-south.cloud-object-storage.appdomain.cloud/assistant-curator.zip) and create a GitHub, GitLab or Bitbucket repository. You will use the IBM Cloud Schematics on your account to manage your resources.
+To deploy this resources you will have to use the files of the asset and create a GitHub, GitLab or Bitbucket repository. You will use the IBM Cloud Schematics on your account to manage your resources.
 
 ### Creating a Shcematics Workspace
 
@@ -84,6 +84,7 @@ The last thing you need to do before deploying your resources is set the values 
 | git_repo_url         | The HTTPS link to your GitHub Repository root directory.\nSee how you can get this link here: https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#cloning-a-repository.                |   Yes    |          Code Engine           |
 | dockerfile_directory | The location of the Dockerfile in the Git Repository.<br>Only need to change if you change the Dockerfile directory.                                                                                                               |    No    |          Code Engine           |
 | has_lite_cloudant    | To prevent erros creating your Cloudant instance, use this variable to inform if you already has any LITE Cloudant Instance in your account.<br>If you change this variable to True, a Standard Cloudant instance will be created. |    No    |            Cloudant            |
+| cloudant_name        | The name of your Cloudant Instance.<br />If no Cloudant name is provided, the default 'cloudant-instance' will be created.                                                                                                         |    No    |            Cloudant            |
 | namespace            | The namespace used to create the Cloud Function Actions.<br />If no namespace is provided, the default 'functions-namespace' will be created.                                                                                      |    No    |        Cloud Functions         |
 | skillID              | The skill ID of your Watson Assistant.<br />If you don't have one yet, referal to the documeation later to add it.                                                                                                                 |    No    |        Cloud Functions         |
 | cos_name             | The name of your Cloud Object Storage.<br />If no COS name is provided, the default 'cos-instance' will be created.                                                                                                                |    No    |      Cloud Object Storage      |

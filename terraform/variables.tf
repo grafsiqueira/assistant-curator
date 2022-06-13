@@ -108,6 +108,12 @@ variable "has_lite_cloudant" {
   default     = false
 }
 
+variable "cloudant_name" {
+  description = "The name of your Cloudant Instance.\nIf no Cloudant name is provided, the default 'cloudant-instance' will be created."
+  type        = string
+  default     = ""
+}
+
 ###############################################################
 #                                                             #
 #                        ASSISTANT                            #
