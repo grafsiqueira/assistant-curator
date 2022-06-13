@@ -7,6 +7,7 @@
 data "ibm_cloudant" "cloudant" {
   count = length(var.cloudant_name) > 0 ? 1 : 0
   name  = var.cloudant_name
+  resource_group_id = data.ibm_resource_group.group.id
 }
 
 resource "ibm_cloudant" "cloudant" {
