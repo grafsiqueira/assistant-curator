@@ -7,7 +7,7 @@
 resource "ibm_resource_instance" "codeengine" {
   name              = local.ce_project_name
   service           = "codeengine"
-  plan              = "standard"
+  plan              = "free"
   location          = var.cloud_region
   resource_group_id = data.ibm_resource_group.group.id
 }
