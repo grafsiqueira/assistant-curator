@@ -75,7 +75,7 @@ resource "ibm_function_rule" "rule" {
 
 # WATSON EXPERIMENTS CLOUD FUNCTION
 
-resource "null_resource" "experiments-action" {
+/* resource "null_resource" "experiments-action" {
   provisioner "local-exec" {
     command = "/bin/bash scripts/zip_cf.sh"
 
@@ -127,4 +127,4 @@ resource "ibm_function_action" "watson-experiments" {
     kind      = "blackbox"
   }
   depends_on = [null_resource.experiments-action]
-}
+} */
