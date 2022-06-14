@@ -4,7 +4,7 @@
 #                                                             #
 ###############################################################
 
-/* resource "ibm_resource_instance" "codeengine" {
+resource "ibm_resource_instance" "codeengine" {
   name              = local.ce_project_name
   service           = "codeengine"
   plan              = "standard"
@@ -33,4 +33,3 @@ resource "null_resource" "codeengine" {
   }
   depends_on = [ibm_resource_instance.codeengine, ibm_cr_namespace.namespace]
 }
-*/
