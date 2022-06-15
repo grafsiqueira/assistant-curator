@@ -49,12 +49,11 @@ export default function HeaderIcc({ modalOpen, helpOpen, renderButton }) {
   const [openSidePanel, setOpenSidePanel] = useState(false);
 
   return (
-    <Header aria-label="IBM Innovation Studio">
+    <Header aria-label="Assistant Curator POC FIS">
       <HeaderName
-        prefix="IBM Innovation Studio"
+        prefix="Assistant Curator POC FIS"
         onClick={() => history.push(`/dashboard`)}
       >
-        Assistant Curator
       </HeaderName>
       {!history.location.pathname.includes("login") && (
         <>
