@@ -16,7 +16,7 @@ resource "ibm_resource_instance" "db2" {
   count             = length(var.db2_name) > 0 ? 0 : 1
   name              = "db2-instance"
   service           = "dashdb-for-transactions"
-  plan              = "free"
+  plan              = "standard"
   location          = var.cloud_region
   resource_group_id = data.ibm_resource_group.group.id
 

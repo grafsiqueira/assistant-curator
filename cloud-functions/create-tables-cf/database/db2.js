@@ -17,7 +17,7 @@ function endConnection(conn) {
 
 function createPrimaryTable(conn, table) {
   return new Promise((resolve, reject) => {
-    var sql = `CREATE TABLE IF NOT EXISTS PDP10762.${table} (idUser VARCHAR(1000)NOT NULL, conversationID VARCHAR(1000) NOT NULL,logID VARCHAR(1000) NOT NULL, clientMessage CLOB(2147483647),clientTimeStamp timestamp,assistantMessage CLOB(2147483647),assistantTimeStamp timestamp,nodeTitle VARCHAR(1000), sentiment FLOAT(10),firstIntent VARCHAR(1000),firstIntentConfidence FLOAT(10),intents VARCHAR(10000),intentsConfidence VARCHAR(10000),entities VARCHAR(1000),error VARCHAR(10000),score INTEGER default null,PRIMARY KEY(logID));`;
+    var sql = `CREATE TABLE IF NOT EXISTS CURATOR.${table} (idUser VARCHAR(1000)NOT NULL, conversationID VARCHAR(1000) NOT NULL,logID VARCHAR(1000) NOT NULL, clientMessage CLOB(2147483647),clientTimeStamp timestamp,assistantMessage CLOB(2147483647),assistantTimeStamp timestamp,nodeTitle VARCHAR(1000), sentiment FLOAT(10),firstIntent VARCHAR(1000),firstIntentConfidence FLOAT(10),intents VARCHAR(10000),intentsConfidence VARCHAR(10000),entities VARCHAR(1000),error VARCHAR(10000),score INTEGER default null,PRIMARY KEY(logID));`;
     try {
       conn.query(sql, (err) => {
         if (err) {
@@ -36,7 +36,7 @@ function createPrimaryTable(conn, table) {
 
 function createSecondaryTable(conn, table) {
   return new Promise((resolve, reject) => {
-    var sql = `CREATE TABLE IF NOT EXISTS PDP10762.${table} (iduser VARCHAR(1000) NOT NULL,conversationID VARCHAR(1000) NOT NULL,channel VARCHAR(1000),starttime timestamp,timeInterval INTEGER NOT NULL, feedback SMALLINT, transfered BOOLEAN, relevance BOOLEAN,newuser BOOLEAN NOT NULL,PRIMARY KEY(conversationID));`;
+    var sql = `CREATE TABLE IF NOT EXISTS CURATOR.${table} (iduser VARCHAR(1000) NOT NULL,conversationID VARCHAR(1000) NOT NULL,channel VARCHAR(1000),starttime timestamp,timeInterval INTEGER NOT NULL, feedback SMALLINT, transfered BOOLEAN, relevance BOOLEAN,newuser BOOLEAN NOT NULL,PRIMARY KEY(conversationID));`;
     try {
       conn.query(sql, (err) => {
         if (err) {
@@ -55,7 +55,7 @@ function createSecondaryTable(conn, table) {
 
 function createTertiaryTable(conn, table) {
   return new Promise((resolve, reject) => {
-    var sql = `CREATE TABLE IF NOT EXISTS PDP10762.${table} (iduser VARCHAR(1000) NOT NULL,conversationID VARCHAR(1000) NOT NULL,userNumber VARCHAR(1000),userIPAddress VARCHAR(1000),vgwIsDTMF BOOLEAN,vgwBargeInOccurred BOOLEAN,vgwPhoneUserPhoneNumber VARCHAR(1000),vgwDTMFCollectionSucceeded BOOLEAN, concluded BOOLEAN,PRIMARY KEY(conversationID));`;
+    var sql = `CREATE TABLE IF NOT EXISTS CURATOR.${table} (iduser VARCHAR(1000) NOT NULL,conversationID VARCHAR(1000) NOT NULL,userNumber VARCHAR(1000),userIPAddress VARCHAR(1000),vgwIsDTMF BOOLEAN,vgwBargeInOccurred BOOLEAN,vgwPhoneUserPhoneNumber VARCHAR(1000),vgwDTMFCollectionSucceeded BOOLEAN, concluded BOOLEAN,PRIMARY KEY(conversationID));`;
     try {
       conn.query(sql, (err) => {
         if (err) {
@@ -74,7 +74,7 @@ function createTertiaryTable(conn, table) {
 
 function createQuaternaryTable(conn, table) {
   return new Promise((resolve, reject) => {
-    var sql = `CREATE TABLE IF NOT EXISTS PDP10762.${table} (conversationID VARCHAR(1000) NOT NULL,envVariableName VARCHAR(1000) NOT NULL,envVariableValue VARCHAR(1000),envVariableType VARCHAR(1000));`;
+    var sql = `CREATE TABLE IF NOT EXISTS CURATOR.${table} (conversationID VARCHAR(1000) NOT NULL,envVariableName VARCHAR(1000) NOT NULL,envVariableValue VARCHAR(1000),envVariableType VARCHAR(1000));`;
     try {
       conn.query(sql, (err) => {
         if (err) {
@@ -93,7 +93,7 @@ function createQuaternaryTable(conn, table) {
 
 function createQuinaryTable(conn, table) {
   return new Promise((resolve, reject) => {
-    var sql = `CREATE TABLE IF NOT EXISTS PDP10762.${table} (conversationID VARCHAR(1000) NOT NULL, originNode VARCHAR(1000), destineNode VARCHAR(1000));`;
+    var sql = `CREATE TABLE IF NOT EXISTS CURATOR.${table} (conversationID VARCHAR(1000) NOT NULL, originNode VARCHAR(1000), destineNode VARCHAR(1000));`;
     try {
       conn.query(sql, (err) => {
         if (err) {
