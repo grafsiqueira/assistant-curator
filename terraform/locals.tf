@@ -101,11 +101,11 @@ locals {
         "key":"dbConfig",
         "value": {
           "connStr": "DATABASE=${ibm_resource_key.db2.credentials["connection.db2.database"]};HOSTNAME=${ibm_resource_key.db2.credentials["connection.db2.hosts.0.hostname"]};PORT=${ibm_resource_key.db2.credentials["connection.db2.hosts.0.port"]};PROTOCL=TCPIP;UID=${ibm_resource_key.db2.credentials["connection.db2.authentication.username"]};PWD=${ibm_resource_key.db2.credentials["connection.db2.authentication.password"]};Security=SSL;",
-          "primaryTableName": "logs",
-          "secondaryTableName": "conversations",
-          "tertiaryTableName": "calls",
-          "quaternaryTableName": "contextVariables",
-          "quinaryTableName": "conversationPath"
+          "primaryTableName": "logs_poc",
+          "secondaryTableName": "conversations_poc",
+          "tertiaryTableName": "calls_poc",
+          "quaternaryTableName": "contextVariables_poc",
+          "quinaryTableName": "conversationPath_poc"
         }
       },
       {
@@ -114,7 +114,7 @@ locals {
           "apiKey": "${ibm_resource_key.assistant.credentials.apikey}",
           "version": "2021-06-14",
           "serviceUrl": "${ibm_resource_key.assistant.credentials.url}",
-          "skillID": "${var.skillID}",
+          "skillID": "${var.skillIdTwo}",
           "transferNode": ["example1", "example2"],
           "feedbackNode": ["example1", "example2"],
           "relevantTopics": ["example1", "example2"],

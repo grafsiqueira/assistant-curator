@@ -54,6 +54,12 @@ variable "skillID" {
   default     = ""
 }
 
+variable "skillIdTwo" {
+  description = "The skill ID of your Watson Assistant.\nIf you don't have one yet, referal to the documeation later to add it."
+  type        = string
+  default     = ""
+}
+
 ###############################################################
 #                                                             #
 #                   CLOUD OBJECT STORAGE                      #
