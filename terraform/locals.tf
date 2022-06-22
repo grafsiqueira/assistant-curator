@@ -102,11 +102,11 @@ locals {
                       "key":"dbConfig",
                       "value": {
                         "connStr": "DATABASE=${ibm_resource_key.db2.credentials["connection.db2.database"]};HOSTNAME=${ibm_resource_key.db2.credentials["connection.db2.hosts.0.hostname"]};PORT=${ibm_resource_key.db2.credentials["connection.db2.hosts.0.port"]};PROTOCL=TCPIP;UID=${ibm_resource_key.db2.credentials["connection.db2.authentication.username"]};PWD=${ibm_resource_key.db2.credentials["connection.db2.authentication.password"]};Security=SSL;",
-                        "primaryTableName": "logs-nps",
-                        "secondaryTableName": "conversations-nps",
-                        "tertiaryTableName": "calls-nps",
-                        "quaternaryTableName": "contextVariables-nps",
-                        "quinaryTableName": "conversationPath-nps"
+                        "primaryTableName": "logs_nps",
+                        "secondaryTableName": "conversations_nps",
+                        "tertiaryTableName": "calls_nps",
+                        "quaternaryTableName": "contextVariables_nps",
+                        "quinaryTableName": "conversationPath_nps"
                       }
                     },
                     {
