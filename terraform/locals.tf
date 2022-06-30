@@ -37,10 +37,10 @@ locals {
                         "version": "2021-06-14",
                         "serviceUrl": "${ibm_resource_key.assistant.credentials.url}",
                         "skillID": "${var.skillID}",
-                        "transferNode": ["example1", "example2"],
-                        "feedbackNode": ["example1", "example2"],
-                        "relevantTopics": ["example1", "example2"],
-                        "finalNode": ["example1"]
+                        "transferNode": ["atendimento-humano"],
+                        "feedbackNode": ["feedback", "example2"],
+                        "relevantTopics": ["vagas", "example2"],
+                        "finalNode": ["final-algo-mais"]
                       }
                     },
                     {

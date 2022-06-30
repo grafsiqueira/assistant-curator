@@ -22,6 +22,7 @@ function contextVariablesTable(logs) {
     "vgwSessionID",
     "vgwPostResponseTimeoutOccurred",
     "vgwDTMFCollectionSucceeded",
+    "nota",
   ];
 
   for (let log of logs) {
